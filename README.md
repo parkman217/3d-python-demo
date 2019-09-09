@@ -3,8 +3,8 @@ This is a demonstration game to prove that python is powerful enough to be used 
 Heavily influenced by Minecraft this voxel game recreates some of the core mechanics and extends on some of the graphical features.
 
 **How to use**
-Create a virtual environment with python 3.6 and install the requirements in requirements.txt
-Run main.py in src folder
+* Create a virtual environment with python 3.6 and install the requirements in requirements.txt
+ * Run main.py in src folder
 
 **Controls**
 * Mouse to look around
@@ -29,6 +29,7 @@ Run main.py in src folder
 * Secondary process for world generation / file IO
 * Finite loop around worlds
 
+![Screenshot](screenshot.png)
 
-
+More info at https://parker.hessbros.net/page2.html
 
