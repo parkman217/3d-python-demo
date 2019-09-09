@@ -1,0 +1,17 @@
+[
+	{
+		"file_name" : "empty.p",
+		"spawn_rate_weight" : 90
+	},
+	{
+		"file_name" : "something.p",
+		"spawn_rate_weight" : 10
+	},
+	{
+		"file_name" : "holy.p",
+		"spawn_rate_weight" : 3
+	}
+]
+
+
+

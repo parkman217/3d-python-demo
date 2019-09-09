@@ -1,0 +1,2 @@
+* Added basic inventory system
+* Can toggle between infinite blocks and using inventory system with 'i'
