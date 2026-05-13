@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -56,10 +56,10 @@ def BuildBackwardFace(x, y, z, block_type, block_texture_data):#texture done
          , x-0.5, y-0.5, z-0.5, 3.0
          , x+0.5, y+0.5, z-0.5, 3.0
          , x+0.5, y-0.5, z-0.5, 3.0]
-    
+
     tx = block_texture_data[str(block_type)]['backward_texture']['texture_x']
     ty = block_texture_data[str(block_type)]['backward_texture']['texture_y']
-    
+
     x0, x1, y0, y1 = tex_pos_to_coords(tx, ty)
     texture_coords = [x1, y0,
                     x1, y1,
@@ -77,10 +77,10 @@ def BuildRightFace(x, y, z, block_type, block_texture_data):#texture done
          , x+0.5, y-0.5, z-0.5, 0.0
          , x+0.5, y+0.5, z-0.5, 0.0
          , x+0.5, y+0.5, z+0.5, 0.0]
-    
+
     tx = block_texture_data[str(block_type)]['right_texture']['texture_x']
     ty = block_texture_data[str(block_type)]['right_texture']['texture_y']
-    
+
     x0, x1, y0, y1 = tex_pos_to_coords(tx, ty)
     texture_coords = [x1, y0,
                 x0, y1,
@@ -98,10 +98,10 @@ def BuildLeftFace(x, y, z, block_type, block_texture_data):#texture done
          , x-0.5, y-0.5, z-0.5, 1.0
          , x-0.5, y+0.5, z+0.5, 1.0
          , x-0.5, y+0.5, z-0.5, 1.0]
-    
+
     tx = block_texture_data[str(block_type)]['left_texture']['texture_x']
     ty = block_texture_data[str(block_type)]['left_texture']['texture_y']
-    
+
     x0, x1, y0, y1 = tex_pos_to_coords(tx, ty)
     texture_coords = [x0, y0,
                     x1, y0,
@@ -119,10 +119,10 @@ def BuildBottomFace(x, y, z, block_type, block_texture_data):
          , x-0.5, y-0.5, z-0.5, 5.0
          , x+0.5, y-0.5, z+0.5, 5.0
          , x-0.5, y-0.5, z+0.5, 5.0]
-    
+
     tx = block_texture_data[str(block_type)]['bottom_texture']['texture_x']
     ty = block_texture_data[str(block_type)]['bottom_texture']['texture_y']
-    
+
     x0, x1, y0, y1 = tex_pos_to_coords(tx, ty)
     texture_coords = [x1, y0,
                     x1, y1,
@@ -141,10 +141,10 @@ def BuildTopFace(x, y, z, block_type, block_texture_data):#fixed texture
          , x-0.5, y+0.5, z-0.5, 4.0
          , x-0.5, y+0.5, z+0.5, 4.0
          , x+0.5, y+0.5, z+0.5, 4.0]
-    
+
     tx = block_texture_data[str(block_type)]['top_texture']['texture_x']
     ty = block_texture_data[str(block_type)]['top_texture']['texture_y']
-    
+
     x0, x1, y0, y1 = tex_pos_to_coords(tx, ty)
     texture_coords = [x1, y0,
                     x0, y0,
@@ -179,7 +179,7 @@ def build_chunk(ctx, prog, chunk, world_, player_, block_texture_data):
             x_delta+=(world_loop_in+1)*world_width*16
         else:
             x_delta+=(world_loop_in)*world_width*16
-    
+
     for elem in chunk.get_visable_faces():
         x, y, z = elem[0]
         direction = elem[1]
@@ -187,7 +187,7 @@ def build_chunk(ctx, prog, chunk, world_, player_, block_texture_data):
 
         x+=x_delta#making sure the blocks have the right render coords
         z+=chunk.chunk_z*16
-        
+
         if direction == 2:
             vbo1, color1 = BuildForwardFace(x,y,z, block_type, block_texture_data)
             vertices.extend(vbo1)
@@ -301,7 +301,3 @@ def build_faces_from_placed_block(x, y, z, block_type, world_, block_texture_dat
         colors.extend(color1)
         block_data.append([(x,y,z), len(block_data)])
     return vertices, colors, block_data#actually vertices and texture data
-
-
-
-

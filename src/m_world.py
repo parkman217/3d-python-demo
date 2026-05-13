@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -19,7 +19,7 @@ import m_chunk
 import m_world_build_process
 
 
-            
+
 class World:
     '''Worlds have a circumference that represents the number of chunks around they are and they also have a universe height which is how many chunks tall the world and the universe are'''
 
@@ -91,7 +91,7 @@ class World:
                         self.chunk_render_list.pop(a)
                         a-=1
             self.thread_status = "Start_Building_VAO"
-            
+
         elif self.thread_status == "Start_Building_VAO":
             self.working_vertices_bytes = bytearray()
             self.working_textures_bytes = bytearray()
@@ -110,12 +110,12 @@ class World:
                 self.working_textures_bytes.extend(struct.pack(str(len(textures1))+'f', *textures1))
                 self.working_chunk_on += 1
         elif self.thread_status == "Building_Vertex_VBO":
-            self.verticesVBO = renderer_.ctx.buffer(self.working_vertices_bytes)            
+            self.verticesVBO = renderer_.ctx.buffer(self.working_vertices_bytes)
             self.thread_status = "Building_Texture_VBO"
         elif self.thread_status == "Building_Texture_VBO":
             self.texturesVBO = renderer_.ctx.buffer(self.working_textures_bytes)
-            self.world_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.verticesVBO, '4f', ['in_vert']),
-                                      (self.texturesVBO, '2f', ['in_text'])])
+            self.world_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.verticesVBO, '4f', 'in_vert'),
+                                      (self.texturesVBO, '2f', 'in_text')])
             self.indices_to_ignore = []
             self.second_vao = None
             self.second_vertex_data = []
@@ -145,7 +145,7 @@ class World:
             return False
         return self.chunk_list[chunk_x][chunk_z] != None
     def generate_chunk_at(self, chunk_x, chunk_z):
-        
+
         if chunk_x >= self.world_circumferance or chunk_x < 0:
             chunk_x = chunk_x % self.world_circumferance
         if chunk_z >= self.universe_height or chunk_z < 0:
@@ -165,7 +165,7 @@ class World:
     def get_vbos(self):
         return self.verticesVBO, self.second_verticesVBO
     def break_block(self, x, y, z, renderer_):
-        if self.thread_status == "Waiting":#only break or place blocks if thread not running for now            
+        if self.thread_status == "Waiting":#only break or place blocks if thread not running for now
             chunk_x = x//16
             chunk_z = z//16
             if self.does_chunk_exist_at(chunk_x, chunk_z) == False:
@@ -175,7 +175,7 @@ class World:
             block_type = chunk.get_block_at(x%16, y, z%16)
             if block_type == 0 or block_type == None:#returning if trying to break air or nothing
                 return False
-            
+
             chunk.set_block_at(x%16, y, z%16, 0)#setting the block to 0
             if chunk.render_vao_start_offset == None:
                 return False
@@ -185,7 +185,7 @@ class World:
             else:
                 print("appendinating")
                 self.break_wait_list.append((x,y,z))
-                
+
             self.rebuild_shadows = True
             '''Setting the visable faces in the main vao to be invisable for the block that was broken'''
             chunk_visable_faces = chunk.get_visable_faces()
@@ -195,8 +195,8 @@ class World:
                     zeros = [0]*24
                     zero_data = struct.pack(str(len(zeros))+'f', *zeros)
                     self.verticesVBO.write(zero_data, offset = start)
-                    self.world_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.verticesVBO, '4f', ['in_vert']),
-                                              (self.texturesVBO, '2f', ['in_text'])])
+                    self.world_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.verticesVBO, '4f', 'in_vert'),
+                                              (self.texturesVBO, '2f', 'in_text')])
 
 
             '''Deleting data from the second vao buffers if it was for a block that was just deleted'''
@@ -217,22 +217,22 @@ class World:
             if len(self.second_vertex_data) > 0 and len(self.second_texture_data) > 0:
                 self.second_verticesVBO = renderer_.ctx.buffer(struct.pack(str(len(self.second_vertex_data))+'f', *self.second_vertex_data))
                 texturesVBO = renderer_.ctx.buffer(struct.pack(str(len(self.second_texture_data))+'f', *self.second_texture_data))
-                self.second_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.second_verticesVBO, '4f', ['in_vert']),
-                                      (texturesVBO, '2f', ['in_text'])])
+                self.second_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.second_verticesVBO, '4f', 'in_vert'),
+                                      (texturesVBO, '2f', 'in_text')])
             return True
         return False #if the block breaking was not sucessful return false
 
     def place_block(self, x, y, z, block_type, renderer_):
         chunk_x = x//16
         chunk_z = z//16
-        
+
         if self.does_chunk_exist_at(chunk_x, chunk_z) == False:
             print("Trying to place a block where you can't")
             return None
         chunk = self.get_chunk_at(chunk_x, chunk_z)
         if block_type == 0 or block_type == None:#returning if trying to place nothing or air
             return None
-        
+
         chunk.set_block_at(x%16, y, z%16, block_type)#setting the block to the block type
         if self.thread_status == "Waiting":
             self.process_comm.send(["Place", x, y, z, block_type])
@@ -248,9 +248,9 @@ class World:
         self.second_texture_data.extend(text_data)
         self.second_verticesVBO = renderer_.ctx.buffer(struct.pack(str(len(self.second_vertex_data))+'f', *self.second_vertex_data))
         texturesVBO = renderer_.ctx.buffer(struct.pack(str(len(self.second_texture_data))+'f', *self.second_texture_data))
-        self.second_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.second_verticesVBO, '4f', ['in_vert']),
-                                  (texturesVBO, '2f', ['in_text'])])
-        
+        self.second_vao = renderer_.ctx.vertex_array(renderer_.prog, [(self.second_verticesVBO, '4f', 'in_vert'),
+                                  (texturesVBO, '2f', 'in_text')])
+
     def get_block_at(self, x, y, z):
         x = int(x)
         y = int(y)
@@ -366,7 +366,3 @@ class World:
             else:
                 end_pos[2]+=0.0001
         return end_pos
-
-        
-        
-        

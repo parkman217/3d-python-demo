@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -79,24 +79,24 @@ class Chunk:
                                         self.visable_faces.append((a, 1, len(self.visable_faces)))
                             elif self.get_block_at(x-1, y, z) in invisable_block_types:
                                 self.visable_faces.append((a, 1, len(self.visable_faces)))
-                                
+
                             if x == 15:
                                 if plus_x != None:
                                     if plus_x.get_block_at(0, y, z) in invisable_block_types:
                                         self.visable_faces.append((a, 0, len(self.visable_faces)))
                             elif self.get_block_at(x+1, y, z) in invisable_block_types:
                                 self.visable_faces.append((a, 0, len(self.visable_faces)))
-                                
+
                             if y == 0:
                                 pass
                             elif self.get_block_at(x, y-1, z) in invisable_block_types:
                                 self.visable_faces.append((a, 5, len(self.visable_faces)))
-                                
+
                             if y == self.height-1:
                                 self.visable_faces.append((a, 4, len(self.visable_faces)))
                             elif self.get_block_at(x, y+1, z) in invisable_block_types:
                                 self.visable_faces.append((a, 4, len(self.visable_faces)))
-                                
+
                             if z == 0:
                                 if minus_z != None:
                                     if minus_z.get_block_at(x, y, 15) in invisable_block_types:
@@ -112,7 +112,7 @@ class Chunk:
             return True#return true if needed to recalculate
         else:
             return False#return false if didn't need to recalculate
-                        
+
     def get_visable_faces(self):
         if self.visable_faces == None:
             self.calculate_visable_faces()

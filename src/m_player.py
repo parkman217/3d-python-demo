@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -23,7 +23,7 @@ class Player:
 
         self.mouse_sensitivity = 14.0
         self.dt = .1
-        
+
         self.left = False
         self.right = False
         self.up = False
@@ -56,7 +56,7 @@ class Player:
         self.sun_move_speed = 15
         self.block_to_place = 1
         self.infinite_blocks = False
-        
+
     def player_input(self, data_package):
         eventList = data_package['events']
         for event in eventList:
@@ -184,7 +184,7 @@ class Player:
 
         #handle input
         self.player_input(data_package)
-        
+
         dt = data_package['dt']
         lookX = math.sin(math.radians(self.horizontalRotation))#*math.fabs(math.cos(math.radians(self.verticalRotation)))
         lookZ = math.cos(math.radians(self.horizontalRotation))#*math.fabs(math.cos(math.radians(self.verticalRotation)))
@@ -197,7 +197,7 @@ class Player:
         elif self.rotLeft == True:
             self.renderer.sun_angle-=self.sun_move_speed * dt
             self.renderer.set_light_direction()
-        
+
 
         if self.flying == False:
             if self.falling == True:
@@ -261,10 +261,5 @@ class Player:
         projection = glm.perspective(1.5, renderer.screenX/renderer.screenY, .1, 1000)
         view = glm.lookAt(glm.vec3(self.pos[0], self.pos[1], self.pos[2]),
                           glm.vec3(self.pos[0]+lookX, self.pos[1]+lookY, self.pos[2]+lookZ),
-                          glm.vec3(0,1,0))            
+                          glm.vec3(0,1,0))
         return projection, view
-
-
-
-
-

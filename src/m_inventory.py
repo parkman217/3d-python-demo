@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -84,22 +84,12 @@ class Inventory:
             if self.active_items[a] != None:
                 string = block_texture_data[str(self.active_items[a])]['block_name'] + ': '+str(self.items[self.active_items[a]])
             else:string = 'None'
-            
+
             vao = m_renderer.build_text_vao(string, renderer.font, renderer.ctx, renderer.frame_shader, 20,
                                             renderer.screenY-(a*20+20), 40, renderer.screenX, renderer.screenY, color=color)
             self.bar_vaos.append(vao)
-        
+
     def render(self):
         for a in self.bar_vaos:
             a[1].use()
             a[0].render()
-    
-
-
-
-
-
-
-
-
-

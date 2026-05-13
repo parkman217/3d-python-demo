@@ -1,7 +1,7 @@
 import math
 import os
 import struct
-import ModernGL
+import moderngl
 import pygame, sys
 from pygame.locals import *
 import time
@@ -20,12 +20,20 @@ import m_input_manager
 
 class Game:
     def __init__(self):
+        pygame.init()
         self.data_package = {}#used for the event loops and holds player, world, etc
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MAJOR_VERSION, 3)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_MINOR_VERSION, 3)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_PROFILE_MASK, pygame.GL_CONTEXT_PROFILE_CORE)
+        pygame.display.gl_set_attribute(pygame.GL_CONTEXT_FORWARD_COMPATIBLE_FLAG, True)  # required on macOS
+
+        screen = pygame.display.set_mode((960, 540), pygame.OPENGL | pygame.DOUBLEBUF)
+
         self.data_package['renderer'] = m_renderer.Renderer(960, 540)#creates a render object
 
         self.data_package['running'] = True
 
-        self.data_package['input_manager'] = m_input_manager.InputManager()        
+        self.data_package['input_manager'] = m_input_manager.InputManager()
 
         self.ingame_update_list = ['player', 'world', 'renderer']#things to call update on each frame
         self.ingame_tick_list = ['renderer']
@@ -69,7 +77,7 @@ class Game:
             self.data_package['fps'] = self.frame_count
             self.frame_count = 1
             self.last_second_time = t
-                
+
         return dt
     def run(self):
         while self.data_package['running']:
@@ -89,7 +97,7 @@ class Game:
                 if tick == True:
                     for obj in self.ingame_tick_list:
                         self.data_package[obj].tick(self.data_package)
-            
+
             elif self.data_package['game_state'] == 'menus':
                 if self.data_package['world'] != None or self.data_package['player'] != None:
                     self.data_package['world'] = None
@@ -105,4 +113,3 @@ if __name__ == '__main__':
     freeze_support()
     g = Game()
     g.run()
-    
